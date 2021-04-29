@@ -1,7 +1,64 @@
  {% extends 'base_auth.html' %}
-
+{% load static %}
  {% block content %}
-        <div class="card-body">
-            <h1>Register</h1>
-        </div>
+ <section class="contact-from pt-4">
+     <div class="container">
+         <div class="row mt-5">
+             <div class="col-md-7 mx-auto">
+                 <div class="form-wrapper">
+                     <div class="row">
+                         <div class="col-md-12">
+                             <h4>Registration your account</h4>
+                         </div>
+                     </div>
+                     <form _lpchecked="1">
+                         <div class="row">
+                             <div class="col-md-12">
+                                 <div class="form-group">
+                                     <input type="text" class="form-control" name="username" id="username" placeholder="Username">
+                                 </div>
+                             </div>
+                             <div class="col-md-12">
+                                 <div class="form-group">
+                                     <input type="email" class="form-control"  name="email" id="email" placeholder="Email">
+                                 </div>
+                             </div>
+                          
+                             <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="password" class="form-control"  name="password" id="password" placeholder="Password">
+                                </div>
+                                <small class="float-right">Show</small>
+                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="password" class="form-control"  name="confirm_pw" id="confirm_pw" placeholder="Confirm Password">
+                                </div>
+                             </div>
+
+                     
+
+                             <div class="col-md-12">
+                                 <select name="countries" class="custom-select" id="countries">
+                                     <option>Select country</option>
+                                     <option value="usa">USA</option>
+                                     <option value="india">India</option>
+                                     <option value="france">France</option>
+                                     <option value="china">China</option>
+                                     <option value="japan">Japan</option>
+                                     <option value="other">Other</option>
+                                 </select>
+                             </div>
+
+                         </div>
+                         <div class="mt-3">
+                             <button type="submit" class="btn btn-primary">Register</button>
+                         </div>
+                     </form>
+                 </div>
+             </div>
+         </div>
+
+     </div>
+ </section>
  {% endblock %}
