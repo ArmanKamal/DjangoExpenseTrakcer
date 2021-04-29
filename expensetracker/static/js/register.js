@@ -2,6 +2,8 @@ let usernameField = document.getElementById('username')
 let invalidUserNameField = document.querySelector('.invalid-username')
 let emailField = document.getElementById('email')
 let invalidEmail = document.querySelector('.invalid-email')
+let passwordField = document.getElementById('password')
+let showPassword = document.querySelector('.show-password')
 
 usernameField.addEventListener('keyup', function(e){
     usernameVal = e.target.value
@@ -56,4 +58,10 @@ emailField.addEventListener('keyup',function(e){
         })
     }
 
+})
+
+showPassword.addEventListener('click',function(e){
+    const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    this.classList.toggle('fa-eye-slash');
 })

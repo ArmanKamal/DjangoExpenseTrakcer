@@ -42,3 +42,14 @@ body{
     border: #3494E6;
     outline: 0;
   }
+
+  .show-password{
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all;
+
+  }
+
+  .show-password:hover{
+    transform: scale(1.2);
+  }
