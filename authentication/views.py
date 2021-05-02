@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View
 import json
 from django.http import JsonResponse
-from django.contrib.auth.models import User
+from .models import User
 from validate_email import validate_email
 # Create your views here.
 
@@ -28,6 +28,18 @@ class UsernameValidationView(View):
             return JsonResponse({'username_error':'Username should be minimum 3 characters long'},status=400)
         return JsonResponse({'username_valid':True},status=200)
 
+
+
 class SignUpView(View):
     def get(self,request):
         return render(request,"authentication/signup.html")
+
+    def post(self,request):
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        confirm_pw = request.POST['confrim_pw']
+
+        
+        countries = request.POST['countries']
+
