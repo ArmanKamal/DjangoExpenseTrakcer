@@ -1,5 +1,7 @@
 let usernameField = document.getElementById('username')
+let aliasField = document.getElementById('alias')
 let invalidUserNameField = document.querySelector('.invalid-username')
+let invalidAliasField = document.querySelector('.invalid-alias')
 let emailField = document.getElementById('email')
 let invalidEmail = document.querySelector('.invalid-email')
 let passwordField = document.getElementById('password')
@@ -19,16 +21,45 @@ usernameField.addEventListener('keyup', function(e){
         .then((res) => res.json())
         .then((data) => {
             if(data.username_error){
-                submitBtn.disabled = true;
+        
                 usernameField.classList.add("is-invalid");
                 invalidUserNameField.style.display = "block" ;
                 invalidUserNameField.innerHTML=`<p class="text-danger">${data.username_error}</p>`
            
             }
             else{
-                submitBtn.removeAttribute("disabled")
+                
                 usernameField.classList.remove("is-invalid");
                 invalidUserNameField.style.display = "none" ;
+            }
+        })
+    }
+    
+})
+
+aliasField.addEventListener('keyup', function(e){
+    aliasVal = e.target.value
+    if(aliasVal.length>0){
+        fetch('/auth/validate-alias',{
+            headers : { 
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({alias: aliasVal}),
+            method: "POST",
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            if(data.alias_error){
+        
+                aliasField.classList.add("is-invalid");
+                invalidAliasField.style.display = "block" ;
+                invalidAliasField.innerHTML=`<p class="text-danger">${data.alias_error}</p>`
+           
+            }
+            else{
+                
+                aliasField.classList.remove("is-invalid");
+                invalidAliasField.style.display = "none" ;
             }
         })
     }
@@ -49,7 +80,7 @@ emailField.addEventListener('keyup',function(e){
         .then((res) => res.json())
         .then((data) => {
             if(data.email_error){
-                submitBtn.disabled = true;
+               
                 emailField.classList.add("is-invalid");
                 invalidEmail.style.display = "block" ;
                 invalidEmail.innerHTML=`<p class="text-danger">${data.email_error}</p>`
@@ -58,7 +89,7 @@ emailField.addEventListener('keyup',function(e){
             else{
                 emailField.classList.remove("is-invalid");
                 invalidEmail.style.display = "none" ;
-                submitBtn.removeAttribute("disabled")
+             
             }
         })
     }
