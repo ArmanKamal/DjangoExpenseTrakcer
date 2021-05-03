@@ -34,5 +34,6 @@ class User(models.Model):
     countries = models.CharField(max_length=120,null=True,blank=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=False,blank=True)
     objects = UserManager()
 

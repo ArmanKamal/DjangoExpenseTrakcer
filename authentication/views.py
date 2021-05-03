@@ -5,6 +5,12 @@ from django.http import JsonResponse
 from .models import User
 from validate_email import validate_email
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.urls import reverse
+from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.contrib.sites.shortcuts import get_current_site
+from .utils import token_generator
 import bcrypt
 # Create your views here.
 
@@ -57,10 +63,25 @@ class SignUpView(View):
         countries = request.POST['countries']
 
         hash_pw = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-
         user = User.objects.create(username=username, email=email, alias=alias,password=hash_pw,countries=countries)
-        print(user)
+        
+        ## Email Activation ##
+        
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        domain = get_current_site(request).domain
+        link = reverse('activate',kwargs={'uid':uid,'token':token_generator.make_token(user)})
+        email_body = f'Please use this link to activate your account\nhttp://{domain+link}'
+        email_message = send_mail(
+            'Activate Your account',
+            email_body ,
+            'noreply@abc.com',
+            [email],
+            
+        )
         return redirect('/')
         
    
 
+class VerificationView(View):
+    def get(self,request,uid, token):
+        return redirect('/auth/login')
