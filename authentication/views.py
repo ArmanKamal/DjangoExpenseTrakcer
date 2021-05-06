@@ -84,4 +84,21 @@ class SignUpView(View):
 
 class VerificationView(View):
     def get(self,request,uid, token):
+        try:
+            id = force_text(urlsafe_base64_decode(uid))
+            user = User.objects.get(id=id)
+            if not token_generator.check_token(user, token):
+                return redirect('/auth/login'+'?messages='+'User already activated')
+            
+            if user.is_active:
+                return redirect('/auth/login')
+            user.is_active = True
+            user.save()
+        except Exception as e:
+            pass
         return redirect('/auth/login')
+
+
+class LoginView(View):
+    def get(self, request):
+        return render(request, 'authentication/signin.html')
