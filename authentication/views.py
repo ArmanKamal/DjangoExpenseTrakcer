@@ -102,3 +102,31 @@ class VerificationView(View):
 class LoginView(View):
     def get(self, request):
         return render(request, 'authentication/signin.html')
+
+    def post(self,request):
+        email = request.POST['email']
+        password = request.POST['password']
+
+        user = User.objects.filter(email=email)
+
+        if not email and not password:
+            messages.error(request, "Please enter your email and password")
+            return redirect('/auth/login')
+        if user:
+            logged_user = user[0]
+
+            if bcrypt.checkpw(password.encode(),logged_user.password.encode()):
+                if logged_user.is_active:
+                    request.session['logged_user'] = logged_user.id
+                    return redirect('/')
+                else:
+                    messages.error(request, "Account is not activate, Please check your email")
+                    return redirect('/auth/login')
+        messages.error(request, "Email or password are incorrect")
+
+        return redirect('/auth/login')
+
+class LogoutView(View):
+    def get(self, request):
+        request.session.flush()
+        return redirect('/auth/login')
