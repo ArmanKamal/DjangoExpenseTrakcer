@@ -129,4 +129,5 @@ class LoginView(View):
 class LogoutView(View):
     def get(self, request):
         request.session.flush()
+        messages.success(request,'You have been logout')
         return redirect('/auth/login')
