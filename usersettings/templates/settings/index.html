@@ -1,17 +1,26 @@
-{% extends 'base.html' %} 
-{% load static %} 
-{% block content %} 
-    <div class="input-group">
-  <input type="text" class="form-control" aria-label="Text input with dropdown button">
-  <div class="input-group-append">
-    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose.</button>
-    <div class="dropdown-menu">
-      <a class="dropdown-item" href="#">Action</a>
-      <a class="dropdown-item" href="#">Another action</a>
-      <a class="dropdown-item" href="#">Something else here</a>
-      <div role="separator" class="dropdown-divider"></div>
-      <a class="dropdown-item" href="#">Separated link</a>
-    </div>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% for message in messages %}
+<div class="col-md-12">
+  <div class="alert alert-success" role="alert">
+    {{ message}}
   </div>
+  <br>
 </div>
-{% endblock%}
+
+{% endfor %}
+<form method="POST" action="{% url 'settings-create' %}">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="exampleFormControlSelect2">Select Currencies</label>
+    <select name="currency" class="form-control" id="exampleFormControlSelect1">
+      <option selected value={{user_prefrence.currency}}>{{ user_prefrence.currency}}</option>
+      {% for currency in currency_data%}
+         <option value={{currency.name}} - {{currency.value}}>{{currency.name}} --> {{currency.value}}</option>
+      {% endfor %}
+    </select>
+    <input type="submit"  value="Save Changes" class="my-4 btn btn-info form-group">
+  </div>
+  <form>
+    {% endblock%}

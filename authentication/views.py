@@ -91,6 +91,7 @@ class VerificationView(View):
                 return redirect('/auth/login'+'?messages='+'User already activated')
             
             if user.is_active:
+                request.session['logged_user'] = user.id
                 return redirect('/auth/login')
             user.is_active = True
             user.save()
