@@ -32,9 +32,34 @@ def create_expense(request):
                 messages.error(request,value)
             return redirect('/add-expense')
         user = User.objects.get(id=request.session['logged_user'])
+        category = Category.objects.get(name=request.POST['category'])
         amount = request.POST['amount']
-        Expense.objects.create(amount=amount, user=user,spend_date= request.POST['date'])
+        expense =Expense.objects.create(amount=amount, user=user,spend_date= request.POST['date'],category=category )
         messages.success(request,"Saved successfully")
         return redirect('/')
     
     return redirect('/add_expense.html')
+
+
+def edit_expense(request,id):
+    context = {
+
+        "expense": Expense.objects.get(id=id),
+         "categories":Category.objects.all()
+    }
+    return render(request, "edit_expense.html",context)
+
+def update_expense(request,id):
+    if request.method == "POST":
+        errors = Expense.objects.expense_validation(request.POST)
+        if errors:
+            for key,value in errors.items():
+                messages.error(request,value)
+            return redirect('/edit-expense')
+        
+    
+    return redirect('/edit-expense')
+
+def delete_expense(request,id):
+    pass
+

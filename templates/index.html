@@ -10,6 +10,7 @@
     </div>
 
     <div class="row">
+    {% if expenses %}
         <h2>Bordered Table</h2>
             <div class="table-responsive">
               <table class="table table-bordered table-hover tablesorter">
@@ -19,6 +20,7 @@
                     <th>Category</th>
                     <th>Description</th>
                     <th>Date</th>
+                    <th colspan="2">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -28,11 +30,16 @@
                         <td>{{ expense.category.name }} </td>
                         <td>{{ expense.descripiton }}</td>
                         <td>{{ expense.spend_date }}</td>
+                        <td><a href="edit-expense/{{expense.id}}" class="btn btn-success">Edit</a></td>
+                        <td><a href="delete-expense/{{expense.id}}" class="btn btn-danger">Delete</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
               </table>
             </div>
+    {% else %}
+    <h3>No Expenses Found</h3>
+    {% endif %}
     </div>
 
 {% endblock %}

@@ -4,7 +4,8 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Add Expense</li>
+            <li class="breadcrumb-item"><a href="{% url 'add-expense' %}">Add Expense</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Edit Expense</li>
         </ol>
     </nav>
     {% if messages %}
@@ -18,19 +19,19 @@
     {% endif %}
 
      <div class="card card-body">
-        <form action="{% url 'create-expense' %}" method="POST">
+        <form action="{% url 'update-expense' %}" method="POST">
         {% csrf_token %}
         <div class="row">
             <div class="col-md-6">
             <label class="font-weight-bold ml-1">Amount: </label>
-                <input type="number" step="any" placeholder="Enter Amount"   class="form-control"  name="amount" />
+                <input value={{ expense.amount }} type="number" step="any" placeholder="Enter Amount"   class="form-control"  name="amount" />
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-6 my-2">
             <label class="font-weight-bold  ml-1">Description: </label>
-                <textarea name="description" class="form-control" placeholder="Any Description(Optional)" id="" cols="60" rows="5"></textarea>
+                <textarea name="description" class="form-control" placeholder="Any Description(Optional)" id="" cols="60" rows="5">{{expense.descripiton}}</textarea>
             </div>
         </div>
 
@@ -38,23 +39,16 @@
             <div class="col-md-6 my-2">
             <label class="font-weight-bold  ml-1">Category: </label>
                <select class="form-control" name="category">
-                <option selected></option>
+                <option selected>{{expense.category.name}}</option>
                 {% for category in categories %}
                     <option value="{{category.name}}">{{category.name}}</option>
                 {% endfor %}
-               
+                
                </select>
             </div>
         </div>
 
-         <div class="row">
-            <div class="col-md-6 my-2">
-            <label class="font-weight-bold  ml-1">Spend Date: </label>
-               <input type="date" name="date" class="form-control" placeholder="Enter Spend Date(Optional)" />
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary my-2 px-5">Create</button>
+        <button type="submit" class="btn btn-primary my-2 px-5">Update</button>
            
             
         </form>

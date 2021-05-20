@@ -11,8 +11,23 @@ class ExpenseManager(models.Manager):
             errors['amount'] = "Please Enter the Amount."
         if len(postData['date'])<1:
             errors['date'] = "Please Choose a date"
+        if postData['category'] == '':
+            errors['category'] = "You must choose a category"
         return errors
-            
+
+    def expense_update_validation(self,postData):
+        errors = {}
+        if not postData['amount']:
+            errors['amount'] = "Please Enter the Amount."
+        if postData['category'] == '':
+            errors['category'] = "You must choose a category"
+        return errors
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=255)
+    creted_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)       
 
 # Create your models here.
 class Expense(models.Model):
@@ -20,11 +35,7 @@ class Expense(models.Model):
     spend_date = models.DateField(default=datetime.date.today())
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     description = models.TextField(blank=True,null=True)
-    category = models.ManyToManyField("Category",null=True)
+    category = models.ForeignKey(Category, null=True,on_delete=models.CASCADE)
     creted_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = ExpenseManager()
-class Category(models.Model):
-    name = models.CharField(max_length=255)
-    creted_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
