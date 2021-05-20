@@ -19,7 +19,7 @@
     {% endif %}
 
      <div class="card card-body">
-        <form action="{% url 'update-expense' %}" method="POST">
+        <form action="{% url 'update-expense' expense.id %}" method="POST">
         {% csrf_token %}
         <div class="row">
             <div class="col-md-6">

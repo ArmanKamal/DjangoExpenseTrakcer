@@ -51,13 +51,19 @@ def edit_expense(request,id):
 
 def update_expense(request,id):
     if request.method == "POST":
-        errors = Expense.objects.expense_validation(request.POST)
+        errors = Expense.objects.expense_update_validation(request.POST)
         if errors:
             for key,value in errors.items():
                 messages.error(request,value)
-            return redirect('/edit-expense')
-        
-    
+            return redirect(f'/edit-expense/{id}')
+        expense = Expense.objects.get(id=id)
+        category = Category.objects.get(name=request.POST['category'])
+        expense.amount = request.POST['amount']
+        expense.description = request.POST['description']
+        expense.category = category
+        expense.save()
+        messages.success(request, "Updated Successfully")
+        return redirect('/')
     return redirect('/edit-expense')
 
 def delete_expense(request,id):

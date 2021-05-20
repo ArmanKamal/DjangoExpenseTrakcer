@@ -6,6 +6,6 @@ urlpatterns = [
     path('add-expense', add_expense,name="add-expense"),
     path('create-expense', create_expense,name="create-expense"),
     path('edit-expense/<int:id>', edit_expense,name="edit-expense"),
-    path('update-expense', update_expense,name="update-expense"),
+    path('update-expense/<int:id>', update_expense,name="update-expense"),
     path('delete-expense/<int:id>',delete_expense,name="delete-expense")
 ]
