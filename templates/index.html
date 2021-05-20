@@ -20,6 +20,7 @@
     
     {% if expenses %}
         <h2>Expense Info</h2>
+        <a href="{% url 'add-expense' %}" class="btn btn-primary ml-auto my-2">Add Expense</a>
             <div class="table-responsive">
               <table class="table table-bordered table-hover tablesorter">
                 <thead>

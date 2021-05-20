@@ -37,13 +37,15 @@
         <div class="row">
             <div class="col-md-6 my-2">
             <label class="font-weight-bold  ml-1">Category: </label>
-               <select class="form-control" name="category">
+               <select class="form-control" name="category" onchange='checkCategory(this.value);'>
                 <option selected></option>
                 {% for category in categories %}
                     <option value="{{category.name}}">{{category.name}}</option>
                 {% endfor %}
+                    <option value="others">Others</option>
                
                </select>
+               <input type="text" name="category_input" id="category" style='display:none;'/>
             </div>
         </div>
 
@@ -59,4 +61,14 @@
             
         </form>
      </div>
+
+     <script>
+        function checkCategory(val){
+            var element=document.getElementById('category');
+            if(val=='others')
+                element.style.display='block';
+            else  
+                element.style.display='none';
+        }
+     </script>
 {% endblock %}

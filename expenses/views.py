@@ -6,7 +6,7 @@ from authentication.models import User
 
 def index(request):
     user = User.objects.get(id=request.session['logged_user'])
-    expenses = Expense.objects.filter(user=user)
+    expenses = Expense.objects.filter(user=user).order_by('-spend_date')
     categories = Category.objects.all()
     context = {
         "categories": categories,
@@ -32,9 +32,12 @@ def create_expense(request):
                 messages.error(request,value)
             return redirect('/add-expense')
         user = User.objects.get(id=request.session['logged_user'])
-        category = Category.objects.get(name=request.POST['category'])
+        if request.POST['category'] == "others":
+            category = Category.objects.create(name=request.POST['category_input'])
+        else:
+            category = Category.objects.get(name=request.POST['category'])
         amount = request.POST['amount']
-        expense =Expense.objects.create(amount=amount, user=user,spend_date= request.POST['date'],category=category )
+        Expense.objects.create(amount=amount, user=user,spend_date= request.POST['date'],category=category )
         messages.success(request,"Saved successfully")
         return redirect('/')
     
