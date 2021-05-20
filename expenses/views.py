@@ -67,5 +67,8 @@ def update_expense(request,id):
     return redirect('/edit-expense')
 
 def delete_expense(request,id):
-    pass
+        expense = Expense.objects.get(id=id)
+        expense.delete()
+        messages.success(request,'Deleted Successfully')
+        return redirect('/')
 

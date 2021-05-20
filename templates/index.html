@@ -4,17 +4,17 @@
 {% block content %}
 
 
-    <div class="row">
-          {% if messages %}
+  
+    {% if messages %}
          {% for message in messages %}
-            <div class="alert alert-danger" role="alert">
+            <div class="alert alert-info" role="alert">
             {{ message}}
             </div>
         {% endfor %}
        
   
     {% endif %}
-    </div>
+  
 
     <div class="row">
     
