@@ -4,6 +4,9 @@ from django.shortcuts import render,redirect
 from django.core.paginator import Paginator
 from .models import Category, Expense
 from authentication.models import User
+from django.db.models import Q
+import json
+from django.http import JsonResponse
 # Create your views here.
 
 def index(request):
@@ -81,3 +84,13 @@ def delete_expense(request,id):
         messages.success(request,'Deleted Successfully')
         return redirect('/')
 
+
+
+
+def search_expenses(request):
+    if request.method == 'POST':
+        user = User.objects.get(id=request.session['logged_user'])
+        search = json.loads(request.body).get('search')
+        expenses = Expense.objects.filter(Q(amount__startswith=search,user=user) | Q(spend_date__startswith=search,user=user) |  Q(description__icontains=search,user=user) |  Q(category__icontains=search,user=user))
+        data = expenses.values()
+        return JsonResponse(list(data), safe=False)
