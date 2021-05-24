@@ -34,7 +34,7 @@ searchField.addEventListener('keyup',function(event){
                 data.forEach((item) => {
                     tableBody.innerHTML += `
                     <tr>
-                        <td>${item.amount}</td>
+                        <td>$${item.amount}</td>
                         <td>${item.category_id}</td>
                         <td>${item.description}</td>
                         <td>${item.spend_date}</td>

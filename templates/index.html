@@ -15,12 +15,14 @@
   
     {% endif %}
   
-
+    <div class="row mb-5">
+            <h4 class="text-primary  font-weight-bold">Current Currency ({{ currency.currency }})</h4>
+    </div>
     <div class="row">
     {% if expenses %}
-     
         <h2 class="search-header">Expense Info</h2>
         <a href="{% url 'add-expense' %}" class="btn btn-primary ml-auto my-2">Add Expense</a>
+  
             {% include 'snippets/search-table.html' %}
             <div class="table-responsive main-table">
               <table class="table table-bordered table-hover tablesorter">
@@ -36,7 +38,7 @@
                 <tbody>
                 {% for expense in page_obj %}
                     <tr>
-                        <td>{{ expense.amount }} </td>
+                        <td>${{ expense.amount|floatformat:2 }} </td>
                         <td>{{ expense.category.name }} </td>
                         <td>{{ expense.description }}</td>
                         <td>{{ expense.spend_date }}</td>

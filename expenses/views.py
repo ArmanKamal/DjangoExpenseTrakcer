@@ -8,6 +8,7 @@ from authentication.models import User
 from django.db.models import Q
 import json
 from django.http import JsonResponse
+from usersettings.models import Setting
 # Create your views here.
 
 def index(request):
@@ -17,10 +18,13 @@ def index(request):
     page_number = request.GET.get('page')
     page_obj = Paginator.get_page(paginator,page_number)
     categories = Category.objects.all()
+    currency = Setting.objects.get(user=user)
+    print(currency)
     context = {
         "categories": categories,
         "expenses": expenses,
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        "currency": currency
     }
     return render(request, "index.html",context)
 
