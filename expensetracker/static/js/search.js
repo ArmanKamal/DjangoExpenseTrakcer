@@ -1,9 +1,18 @@
 const searchField = document.getElementById('searchField')
+const searchTable = document.querySelector('.search-table')
+const mainTable = document.querySelector('.main-table')
+const searchResult = document.querySelector('.search-header')
+const pagintorContainer = document.querySelector('.paginator-container')
+const tableBody = document.getElementById('s-table-body')
+
 
 searchField.addEventListener('keyup',function(event){
     const searchValue = event.target.value
 
     if(searchValue.trim().length > 0){
+        pagintorContainer.style.display = "none";
+        mainTable.style.display = "none";
+        tableBody.innerHTML = ''
         fetch('/expenses/search/',{
             body: JSON.stringify({search: searchValue}),
             method: "POST",
@@ -11,8 +20,42 @@ searchField.addEventListener('keyup',function(event){
         })
         .then((res) => res.json())
         .then((data) => {
-            console.log("data",data)
+            console.log(data)
+            searchTable.style.display = "block";
+            mainTable.style.display = "none";
+            searchResult.textContent = "Expenses Info"
+            if(data.length === 0){
+                searchTable.style.display = "none";
+                searchResult.textContent = "No Results Found"
+            }
+            else{
+                searchResult.textContent = "Expenses Info"
+                searchTable.style.display="block"
+                data.forEach((item) => {
+                    tableBody.innerHTML += `
+                    <tr>
+                        <td>${item.amount}</td>
+                        <td>${item.category_id}</td>
+                        <td>${item.description}</td>
+                        <td>${item.spend_date}</td>
+                        <td><a href="edit-expense/${item.id}" class="btn btn-success">Edit</a></td>
+                        <td><a href="delete-expense/${item.id}" class="btn btn-danger">Delete</a></td>
+                    </tr>
+                    `
+                })
+            }
+           
+
         })
+    }
+    else{
+        searchTable.style.display = "none";
+        mainTable.style.display = "block";
+        searchResult.textContent = "Expenses Info"
+        pagintorContainer.style.display = "block";
+       
+      
+      
     }
 })
 

@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.core import paginator
+from django.http.response import HttpResponse
 from django.shortcuts import render,redirect
 from django.core.paginator import Paginator
 from .models import Category, Expense
@@ -89,8 +90,12 @@ def delete_expense(request,id):
 
 def search_expenses(request):
     if request.method == 'POST':
-        user = User.objects.get(id=request.session['logged_user'])
         search = json.loads(request.body).get('search')
-        expenses = Expense.objects.filter(Q(amount__startswith=search,user=user) | Q(spend_date__startswith=search,user=user) |  Q(description__icontains=search,user=user) |  Q(category__icontains=search,user=user))
-        data = expenses.values()
-        return JsonResponse(list(data), safe=False)
+        user = User.objects.get(id=request.session['logged_user'])
+        lookups = Q(amount__istartswith=search,user=user) | Q(spend_date__istartswith=search,user=user) |  Q(description__icontains=search,user=user) |  Q(category__name__icontains=search,user=user)
+        expenses = Expense.objects.filter(lookups)
+        data = list(expenses.values())
+        for d in data:
+            category = Category.objects.get(id=d['category_id'])
+            d['category_id'] = category.name
+        return JsonResponse(data, safe=False)

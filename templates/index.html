@@ -17,11 +17,12 @@
   
 
     <div class="row">
-    
     {% if expenses %}
-        <h2>Expense Info</h2>
+     
+        <h2 class="search-header">Expense Info</h2>
         <a href="{% url 'add-expense' %}" class="btn btn-primary ml-auto my-2">Add Expense</a>
-            <div class="table-responsive">
+            {% include 'snippets/search-table.html' %}
+            <div class="table-responsive main-table">
               <table class="table table-bordered table-hover tablesorter">
                 <thead>
                   <tr>
@@ -46,7 +47,7 @@
                 </tbody>
               </table>
             </div>
-             <div class="row">
+             <div class="row paginator-container">
                 <p class="ml-4">Showing page {{page_obj.number}} of {{page_obj.paginator.num_pages}}</p>
 
                     {% if page_obj.has_next %}
