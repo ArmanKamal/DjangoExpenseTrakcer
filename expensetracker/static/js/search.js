@@ -20,10 +20,11 @@ searchField.addEventListener('keyup',function(event){
         })
         .then((res) => res.json())
         .then((data) => {
-            console.log(data)
+           
             searchTable.style.display = "block";
             mainTable.style.display = "none";
-            searchResult.textContent = "Expenses Info"
+            searchResult.textContent = "Expenses Info";
+         
             if(data.length === 0){
                 searchTable.style.display = "none";
                 searchResult.textContent = "No Results Found"
@@ -31,6 +32,7 @@ searchField.addEventListener('keyup',function(event){
             else{
                 searchResult.textContent = "Expenses Info"
                 searchTable.style.display="block"
+                searchField.autocomplete = data;
                 data.forEach((item) => {
                     tableBody.innerHTML += `
                     <tr>
