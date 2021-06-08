@@ -17,26 +17,26 @@
   
     {% endif %}
 
-     <div class="card card-body">
+
         <form action="{% url 'create-income' %}" method="POST">
         {% csrf_token %}
-        <div class="row">
-            <div class="col-md-6">
-            <label class="font-weight-bold ml-1">Amount: </label>
+        <div class="form-row">
+            <label class="font-weight-bolder text-dark ml-4 mr-4">Amount: </label>
+            <div class="col-md-6 ml-3">
                 <input type="number" step="any" placeholder="Enter Amount"   class="form-control"  name="amount" />
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-6 my-2">
-            <label class="font-weight-bold  ml-1">Description: </label>
+        <div class="form-row my-4">
+            <label class="font-weight-bolder text-dark ml-4 mr-3">Description: </label>
+            <div class="col-md-6">
                 <textarea name="description" class="form-control" placeholder="Any Description" id="" cols="60" rows="5"></textarea>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-6 my-2">
-            <label class="font-weight-bold  ml-1">Source: </label>
+        <div class="form-row my-4">
+            <label class="font-weight-bolder text-dark ml-4 mr-4">Source: </label>
+            <div class="col-md-6 ml-4">
                <select class="form-control" name="source" onchange='checkSource(this.value);'>
                 <option selected></option>
                 {% for source in sources %}
@@ -49,18 +49,17 @@
             </div>
         </div>
 
-         <div class="row">
-            <div class="col-md-6 my-2">
-            <label class="font-weight-bold  ml-1">Income Date: </label>
-               <input type="date" name="date" class="form-control" placeholder="Enter Income Date(Optional)" />
+         <div class="form-row my-4">
+            <label class="font-weight-bolder text-dark ml-4 mr-1">Income Date: </label>
+            <div class="col-md-6">
+               <input type="date" name="date" value="{{time|date:'Y-m-d'}}" class="form-control" />
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary my-2 px-5">Create</button>
+        <button type="submit" class="btn btn-primary my-3 ml-4 px-5">Create</button>
            
             
         </form>
-     </div>
 
      <script>
         function checkSource(val){

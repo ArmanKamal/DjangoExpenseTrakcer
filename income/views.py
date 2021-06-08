@@ -3,6 +3,7 @@ from authentication.models import User
 from .models import Source,Income
 from usersettings.models import Setting
 from django.contrib import messages
+from datetime import datetime
 from django.core.paginator import Paginator
 # Create your views here.
 def index(request):
@@ -16,6 +17,7 @@ def index(request):
     page_obj = Paginator.get_page(paginator,page_number)
     sources = Source.objects.all()
     currency = Setting.objects.get(user=user[0])
+ 
 
     context = {
         "sources": sources,
@@ -29,10 +31,12 @@ def add_income(request):
 
     sources = Source.objects.all()
   
+  
     context = {
         "sources": sources,
-       
+        "time": datetime.now()  
     }
+ 
     return render(request, "add_income.html",context)
 
 def create_income(request):
@@ -54,3 +58,28 @@ def create_income(request):
         return redirect('/income')
     
     return redirect('/income/add-income')
+
+def edit_income(request,id):
+    income = Income.objects.get(id=id)
+    context = {
+        "income": income,
+        "sources":Source.objects.exclude(name=income.source.name)
+    }
+    return render(request,"edit_income.html",context)
+
+def update_income(request, id):
+    if request.method == "POST":
+        errors = Income.objects.income_update_validation(request.POST)
+        if errors:
+            for key,value in errors.items():
+                messages.error(request,value)
+            return redirect(f'/edit-income/{id}')
+        income = Income.objects.get(id=id)
+        source = Source.objects.get(name=request.POST['source'])
+        income.amount = request.POST['amount']
+        income.description = request.POST['description']
+        income.source = source
+        income.save()
+        messages.success(request, "Updated Successfully")
+        return redirect('/income')
+    return redirect('/edit-income')

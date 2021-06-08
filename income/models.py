@@ -16,6 +16,16 @@ class IncomeManager(models.Manager):
             errors['source_duplicate'] = "Source Already exists"
         return errors
 
+    def income_update_validation(self,postData):
+        errors = {}
+        if not postData['amount']:
+            errors['amount'] = "Please Enter the Amount."
+        if postData['source'] == '':
+            errors['source'] = "You must choose a source"
+        if len(postData['date'])<1:
+            errors['date'] = "Please Choose a date"
+        return errors
+
 class Source(models.Model):
     name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)

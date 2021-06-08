@@ -12,6 +12,8 @@ from usersettings.models import Setting
 # Create your views here.
 
 def index(request):
+    if 'logged_user' not in request.session:
+        return redirect('/auth/login')
     user = User.objects.get(id=request.session['logged_user'])
     expenses = Expense.objects.filter(user=user).order_by('-spend_date')
     paginator = Paginator(expenses,5)
