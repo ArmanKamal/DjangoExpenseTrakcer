@@ -5,8 +5,14 @@ from usersettings.models import Setting
 from django.contrib import messages
 from datetime import datetime
 from django.core.paginator import Paginator
+import json
+from django.http import JsonResponse
+from django.db.models import Q
 # Create your views here.
 def index(request):
+    if 'logged_user' not in request.session:
+        messages.error('Login required')
+        return redirect('/auth/login')
     user = User.objects.filter(id=request.session['logged_user'])
     if user.count() <= 0:
         return redirect('/auth/login')
@@ -28,7 +34,9 @@ def index(request):
     return render(request, "income.html",context)
 
 def add_income(request):
-
+    if 'logged_user' not in request.session:
+        messages.error('Login required')
+        return redirect('/auth/login')
     sources = Source.objects.all()
   
   
@@ -60,6 +68,9 @@ def create_income(request):
     return redirect('/income/add-income')
 
 def edit_income(request,id):
+    if 'logged_user' not in request.session:
+        messages.error('Login required')
+        return redirect('/auth/login')
     income = Income.objects.get(id=id)
     context = {
         "income": income,
@@ -83,3 +94,29 @@ def update_income(request, id):
         messages.success(request, "Updated Successfully")
         return redirect('/income')
     return redirect('/edit-income')
+
+
+def delete_income(request,id):
+        if 'logged_user' not in request.session:
+            messages.error('Login required')
+            return redirect('/auth/login')
+        income = Income.objects.get(id=id)
+        income.delete()
+        messages.success(request,'Deleted Successfully')
+        return redirect('/income')
+
+
+
+
+def search_income(request):
+    print("Searching")
+    if request.method == 'POST':
+        search = json.loads(request.body).get('search')
+        user = User.objects.get(id=request.session['logged_user'])
+        lookups = Q(amount__istartswith=search,owner=user) | Q(date__istartswith=search,owner=user) |  Q(description__icontains=search,owner=user) |  Q(source__name__icontains=search,owner=user)
+        incomes = Income.objects.filter(lookups)
+        data = list(incomes.values())
+        for d in data:
+            source = Source.objects.get(id=d['source_id'])
+            d['source_id'] = source.name
+        return JsonResponse(data, safe=False)

@@ -23,8 +23,9 @@
     <div class="row">
  
      {% if incomes %}
+
       <h2 class="search-header">Income Info</h2>
-            {% include 'snippets/search-table.html' %}
+            {% include 'snippets/income-search.html' %}
             <div class="table-responsive main-table">
               <table class="table table-bordered table-hover tablesorter">
                 <thead>
@@ -68,5 +69,8 @@
   
     {% endif %}
     </div>
+
+
+    <script src="{% static 'js/income-search.js' %}"></script>
 
 {% endblock %}

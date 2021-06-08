@@ -7,5 +7,6 @@ urlpatterns = [
     path('',include('expenses.urls')),
     path('users/',include('usersettings.urls')),
     path('auth/',include('authentication.urls')),
-    path('income/',include('income.urls'))
+    path('income/',include('income.urls')),
+   
 ]
