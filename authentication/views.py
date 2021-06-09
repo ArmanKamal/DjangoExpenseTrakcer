@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render,redirect
 from django.views import View
 import json
@@ -12,6 +13,7 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
 from .utils import token_generator
 import bcrypt
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 # Create your views here.
 
 class EmailValidation(View):
@@ -132,3 +134,36 @@ class LogoutView(View):
         request.session.flush()
         messages.success(request,'You have been logout')
         return redirect('/auth/login')
+
+class RequestPassword(View):
+    def get(self,request):
+        return render(request, 'authentication/reset-password.html')
+
+    def post(self,request):
+        email = request.POST['email']
+        if not validate_email(email):
+            messages.error(request, 'Please enter a valid email')
+            return render(request, 'authentication/reset-password.html')
+        
+        current_site = get_current_site(request)
+        user = User.objects.filter(email=email)
+        if user.exists():
+            uid = urlsafe_base64_encode(force_bytes(user[0].pk))
+            domain = get_current_site(request).domain
+            link = reverse('reset-password',kwargs={'uid':uid,'token':PasswordResetTokenGenerator.make_token(user[0])})
+            email_body = f'Please click the link to reset your account\nhttp://{domain+link}'
+            email_message = send_mail(
+                'Reset Password',
+                email_body ,
+                'noreply@abc.com',
+                [email],
+                
+            )
+class RequestPasswordCompleted(View):
+    def get(self,request,uid,token):
+        return render(request,"authentication/set-newpassword.html")
+    def post(self,request,uid,token):
+        return render(request,"authentication/set-newpassword.html")
+
+          
+

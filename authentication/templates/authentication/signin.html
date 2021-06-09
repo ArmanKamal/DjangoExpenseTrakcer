@@ -37,13 +37,19 @@
                                 </div>
                           
                              </div>
-                            <div class="col-md-6">
-                         </div>
-                         <div class="mt-3">
-                             <button type="submit" class="btn btn-primary submit-btn">Login</button>
-                         </div>
+                            <div class="col-md-12">
+                                <div class="mt-3">
+                                    <button type="submit" class="btn btn-primary submit-btn">Login</button>
+                                </div>
+                            </div>
+                        
                      </form>
-                     {% comment %} <a href="{% url 'register' %}">Register</a> {% endcomment %}
+                     <div class="col-md-12">
+                       <p class=" mt-4">Dont have an account? <a href="{% url 'register' %}">Register</a></p>
+                     </div>
+                    <div class="col-md-12">
+                        <p>Forgot your password? <a href="{% url 'reset-password' %}">Reset Password</a></p>
+                     </div>
                  </div>
              </div>
          </div>
