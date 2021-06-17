@@ -10,5 +10,5 @@ urlpatterns = [
     path('validate-alias',csrf_exempt(AliasValidationView.as_view()),name="validate_alias"),
     path('activate/<uid>/<token>', VerificationView.as_view(),name='activate'),
     path('reset-link',RequestPassword.as_view(),name='reset-password'),
-    path('set-new-password',RequestPasswordCompleted.as_view(),name='setNew-password')
+    path('set-new-password/<uid>/<token>',RequestPasswordCompleted.as_view(),name='set-new-password')
 ]

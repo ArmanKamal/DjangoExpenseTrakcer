@@ -147,11 +147,13 @@ class RequestPassword(View):
         
         current_site = get_current_site(request)
         user = User.objects.filter(email=email)
-        if user.exists():
+     
+        if user.exists() and user[0].is_active:
+            print(user[0])
             uid = urlsafe_base64_encode(force_bytes(user[0].pk))
             domain = get_current_site(request).domain
-            link = reverse('reset-password',kwargs={'uid':uid,'token':PasswordResetTokenGenerator.make_token(user[0])})
-            email_body = f'Please click the link to reset your account\nhttp://{domain+link}'
+            link = reverse('set-new-password',kwargs={'uid':uid,'token':token_generator.make_token(user[0])})
+            email_body = f'Please click the link to reset your account password\nhttp://{domain+link}'
             email_message = send_mail(
                 'Reset Password',
                 email_body ,
@@ -159,11 +161,50 @@ class RequestPassword(View):
                 [email],
                 
             )
+            messages.success(request,"We have sent to an email to reset your password")
+            return redirect('/auth/reset-link')
+        else:
+            messages.error(request,'Please activate your account first.See your previous email')
+            return redirect('/auth/login')
+
+
 class RequestPasswordCompleted(View):
     def get(self,request,uid,token):
-        return render(request,"authentication/set-newpassword.html")
+        context = {
+            'uid':uid,
+            'token':token
+        }
+        user_id = force_text(urlsafe_base64_decode(uid))
+        user = User.objects.get(id=user_id)
+  
+        if not token_generator.check_token(user,token):
+            messages.error(request,'Password link is invalid, please request a new one')
+            return redirect('/auth/reset-link')
+        return render(request,"authentication/set-newpassword.html",context)
+
     def post(self,request,uid,token):
-        return render(request,"authentication/set-newpassword.html")
+        context = {
+                'uid':uid,
+                'token':token
+            }
+        if request.method == "POST":
+            password = request.POST['password']
+            confirm_pw = request.POST['confirm_pw']
+
+            if len(password) <= 5:
+                messages.error(request,'Password field must be atleast 6 characters')
+                return render(request,"authentication/set-newpassword.html",context)
+            if password != confirm_pw:
+                messages.error(request,"Password and confirm password doesnot match")
+                return render(request,"authentication/set-newpassword.html",context)
+            user_id = force_text(urlsafe_base64_decode(uid))
+            user = User.objects.get(id=user_id)
+            hash_pw = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+            user.password = hash_pw
+            user.save()
+            messages.success(request, "Password reset successful")
+            return redirect('/auth/login')
+        return render(request,"authentication/set-newpassword.html",context)
 
           
 
