@@ -14,7 +14,16 @@ from django.contrib.sites.shortcuts import get_current_site
 from .utils import token_generator
 import bcrypt
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-# Create your views here.
+import threading
+
+class EmailThread(threading.Thread):
+    def __init__(self,email):
+        self.email=email
+        threading.Thread.__init__(self)
+
+    def run(self):
+        self.email.send(fail_silently=False)
+
 
 class EmailValidation(View):
     def post(self,request):
@@ -50,6 +59,7 @@ class UsernameValidationView(View):
 
 class SignUpView(View):
     def get(self,request):
+      
         return render(request,"authentication/signup.html")
 
     def post(self,request):
@@ -66,8 +76,7 @@ class SignUpView(View):
 
         hash_pw = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
         user = User.objects.create(username=username, email=email, alias=alias,password=hash_pw,countries=countries)
-        
-        ## Email Activation ##
+
         
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         domain = get_current_site(request).domain
@@ -80,7 +89,8 @@ class SignUpView(View):
             [email],
             
         )
-        return redirect('/')
+        messages.success(request,"Please check your email to activate the account")
+        return redirect('/login')
         
    
 

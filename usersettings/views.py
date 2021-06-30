@@ -14,6 +14,9 @@ def index(request):
 
     if preference_exists:
         user_prefrence = Setting.objects.get(user=user)
+    else:
+        user_prefrence = ""
+    
    
     
     with open(path) as json_file:
