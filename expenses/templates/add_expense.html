@@ -52,7 +52,8 @@
          <div class="row">
             <div class="col-md-6 my-2">
             <label class="font-weight-bold  ml-1">Spend Date: </label>
-               <input type="date" name="date" class="form-control" placeholder="Enter Spend Date(Optional)" />
+    
+               <input type="date" value={{ current_date|date:"Y-m-d" }} name="date" class="form-control" placeholder="Enter Spend Date(Optional)" />
             </div>
         </div>
 

@@ -15,7 +15,7 @@ def index(request):
     if preference_exists:
         user_prefrence = Setting.objects.get(user=user)
     else:
-        user_prefrence = ""
+        user_prefrence = user
     
    
     

@@ -90,7 +90,7 @@ class SignUpView(View):
             
         )
         messages.success(request,"Please check your email to activate the account")
-        return redirect('/login')
+        return redirect('/auth/login')
         
    
 
@@ -104,6 +104,7 @@ class VerificationView(View):
             
             if user.is_active:
                 request.session['logged_user'] = user.id
+                messages.success('Account has been activated')
                 return redirect('/auth/login')
             user.is_active = True
             user.save()

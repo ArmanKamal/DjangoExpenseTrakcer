@@ -6,7 +6,7 @@
         <title>Dashboard</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <!-- bootstrap 3.0.2 -->
-        <link href={% static '"vendor/fontawesome-free/css/all.min.css"' %} rel="stylesheet" type="text/css">
+        <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
@@ -45,15 +45,7 @@
             </div>
             <!-- End of Main Content -->
 
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
+           
 
         </div>
         <!-- End of Content Wrapper -->
@@ -68,22 +60,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <!-- Bootstrap core JavaScript-->
-    <script src={% static '"vendor/jquery/jquery.min.js"' %}></script>
-    <script src={% static '"vendor/bootstrap/js/bootstrap.bundle.min.js"' %}></script>
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
  
 
     <!-- Core plugin JavaScript-->
-    <script src={% static '"vendor/jquery-easing/jquery.easing.min.js"'%}></script>
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js'%}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src={% static '"js/sb-admin-2.min.js"' %}></script>
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
 
-    <!-- Page level plugins -->
-    <script src={% static '"vendor/chart.js/Chart.min.js"' %}></script>
+    {% comment %} <!-- Page level plugins -->
+    <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
 
     <!-- Page level custom scripts -->
-    <script src={% static '"js/demo/chart-area-demo.js"'%}></script>
-    <script src={% static ' "js/demo/chart-pie-demo.js" '%}></script>
+    <script src="{% static 'js/demo/chart-area-demo.js'%}"></script>
+    <script src="{% static 'js/demo/chart-pie-demo.js'%}"></script> {% endcomment %}
 
 </body>
 

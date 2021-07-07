@@ -9,6 +9,7 @@ from django.db.models import Q
 import json
 from django.http import JsonResponse
 from usersettings.models import Setting
+import datetime
 # Create your views here.
 
 def index(request):
@@ -42,11 +43,13 @@ def index(request):
 
 def add_expense(request):
     categories = Category.objects.all()
-  
+    current_date = datetime.date.today()
     context = {
         "categories": categories,
+        "current_date": current_date
        
     }
+  
     return render(request, "add_expense.html",context)
 
 def create_expense(request):
@@ -62,7 +65,7 @@ def create_expense(request):
         else:
             category = Category.objects.get(name=request.POST['category'])
         amount = request.POST['amount']
-        Expense.objects.create(amount=amount, user=user,spend_date= request.POST['date'],category=category )
+        Expense.objects.create(amount=amount, description=request.POST['description'], user=user,spend_date= request.POST['date'],category=category )
         messages.success(request,"Saved successfully")
         return redirect('/')
     
@@ -114,3 +117,15 @@ def search_expenses(request):
             category = Category.objects.get(id=d['category_id'])
             d['category_id'] = category.name
         return JsonResponse(data, safe=False)
+
+
+# def expense_summary(request):
+#     current_date = datetime.date.today()
+#     six_month_prev_date = datetime.timedelta(days=180)
+#     expenses = Expense.objects.filter(date__gte=six_month_prev_date,date__lte=current_date)
+    
+#     def get_category(expense):
+#         return expense.category
+
+#     category_list = list(set(map(get_category,expenses)))
+

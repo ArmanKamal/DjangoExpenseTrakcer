@@ -1,75 +1,72 @@
-
 {% extends 'base.html' %}
-{% load static %}
-{% block content %}
+ {% load static %}
+  {% block content %} 
+    {% if messages%} 
+      {% for message in messages %}
+        <div class="alert alert-info" role="alert">{{ message}}</div>
+      {% endfor %}
+    {% endif %}
 
+<div class="row mb-5">
+  <h4 class="text-primary font-weight-bold">
+    Current Currency ({{ currency.currency }})
+  </h4>
+  <a href="{% url 'add-expense' %}" class="btn btn-primary ml-auto my-2">Add Expense</a>
+</div>
+<div class="row">
+  {% if expenses %}
+    <h2 class="search-header">Expense Info</h2>
 
-  
-    {% if messages %}
-         {% for message in messages %}
-            <div class="alert alert-info" role="alert">
-            {{ message}}
-            </div>
+  {% include 'snippets/search-table.html' %}
+  <div class="table-responsive main-table">
+    <table class="table table-bordered table-hover tablesorter">
+      <thead>
+        <tr>
+          <th>Amount</th>
+          <th>Category</th>
+          <th>Description</th>
+          <th>Date</th>
+          <th colspan="2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for expense in page_obj %}
+        <tr>
+          <td>${{ expense.amount|floatformat:2 }}</td>
+          <td>{{ expense.category.name }}</td>
+          <td>{{ expense.description }}</td>
+          <td>{{ expense.spend_date }}</td>
+          <td>
+            <a href="edit-expense/{{expense.id}}" class="btn btn-success">Edit</a>
+          </td>
+          <td>
+            <a href="delete-expense/{{expense.id}}" class="btn btn-danger">Delete</a>
+          </td>
+        </tr>
         {% endfor %}
-       
-  
-    {% endif %}
-  
-    <div class="row mb-5">
-            <h4 class="text-primary  font-weight-bold">Current Currency ({{ currency.currency }})</h4>
-            <a href="{% url 'add-expense' %}" class="btn btn-primary ml-auto my-2">Add Expense</a>
-    </div>
-    <div class="row">
-    {% if expenses %}
-        <h2 class="search-header">Expense Info</h2>
-     
-  
-            {% include 'snippets/search-table.html' %}
-            <div class="table-responsive main-table">
-              <table class="table table-bordered table-hover tablesorter">
-                <thead>
-                  <tr>
-                    <th>Amount</th>
-                    <th>Category</th>
-                    <th>Description</th>
-                    <th>Date</th>
-                    <th colspan="2">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                {% for expense in page_obj %}
-                    <tr>
-                        <td>${{ expense.amount|floatformat:2 }} </td>
-                        <td>{{ expense.category.name }} </td>
-                        <td>{{ expense.description }}</td>
-                        <td>{{ expense.spend_date }}</td>
-                        <td><a href="edit-expense/{{expense.id}}" class="btn btn-success">Edit</a></td>
-                        <td><a href="delete-expense/{{expense.id}}" class="btn btn-danger">Delete</a></td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-              </table>
-            </div>
-             <div class="row paginator-container">
-                <p class="ml-4">Showing page {{page_obj.number}} of {{page_obj.paginator.num_pages}}</p>
+      </tbody>
+    </table>
+  </div>
+  <div class="row paginator-container">
+    <p class="ml-4 mx-2">
+      Showing page {{page_obj.number}} of {{page_obj.paginator.num_pages}}
+    </p>
 
-                    {% if page_obj.has_next %}
-                   
-                            <ul class="pagination pagination-sm" style="margin-left:40px;">
-                              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
-                              <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
-                            </ul>
-                    {% else %}
-                      <ul class="pagination pagination-sm" style="margin-left:40px;">
-                       <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Prev</a></li>
-                      </ul>
-                    {% endif %}
-              </div>
-    {% else %}
-    <h3>No Expenses Found</h3>
-    {% endif %}
-    </div>
-
-       <script src="{% static 'js/search.js' %}"></script>
+        {% if chapters.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class=" button big previous mx-2">Previous Page</a>
+        {% else %}
+              <a href="#" class="disabled button big previous">Previous Page</a>
+        {%endif%}
+        
+        {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}" class="button big next mx-2">Next Page</a>
+        {% else %}
+              <a href="#" class="button big next mx-2">Next Page</a>
+        {% endif %}
+</div>
+{% else %}
+ <h2 class="search-header">No Expenses Found</h2>
+ {% endif %}
+<script src="{% static 'js/search.js' %}"></script>
 
 {% endblock %}
