@@ -10,6 +10,7 @@ validate-email = "*"
 six = "*"
 bcrypt = "*"
 dj-database-url = "*"
+django-smtp-ssl = "*"
 
 [dev-packages]
 
