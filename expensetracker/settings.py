@@ -150,3 +150,5 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 
 django_heroku.settings(locals())
+
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
