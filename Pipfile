@@ -9,6 +9,7 @@ gunicorn = "*"
 validate-email = "*"
 six = "*"
 bcrypt = "*"
+dj-database-url = "*"
 
 [dev-packages]
 
