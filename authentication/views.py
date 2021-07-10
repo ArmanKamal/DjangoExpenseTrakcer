@@ -15,8 +15,7 @@ from .utils import token_generator
 import bcrypt
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 import threading
-from django.core import mail
-connection = mail.get_connection()
+
 
 class EmailThread(threading.Thread):
     def __init__(self,email):
@@ -79,7 +78,7 @@ class SignUpView(View):
         hash_pw = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
         user = User.objects.create(username=username, email=email, alias=alias,password=hash_pw,countries=countries)
 
-        connection.open()
+    
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         domain = get_current_site(request).domain
         link = reverse('activate',kwargs={'uid':uid,'token':token_generator.make_token(user)})
