@@ -22,14 +22,20 @@ def index(request):
     page_number = request.GET.get('page')
     page_obj = Paginator.get_page(paginator,page_number)
     sources = Source.objects.all()
-    currency = Setting.objects.get(user=user[0])
+    currency = Setting.objects.filter(user=user[0])
+    if currency.exists():
+        user_currecy = currency[0]
+    else:
+        user_currecy = {
+            "USD":"USD"
+        }
  
 
     context = {
         "sources": sources,
         "incomes": incomes,
         'page_obj': page_obj,
-        "currency": currency
+        "currency": user_currecy
     }
     return render(request, "income.html",context)
 

@@ -77,41 +77,41 @@ class SignUpView(View):
 
         hash_pw = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
         user = User.objects.create(username=username, email=email, alias=alias,password=hash_pw,countries=countries)
-
+        request.session['logged_user'] = user.id
     
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
-        domain = get_current_site(request).domain
-        link = reverse('activate',kwargs={'uid':uid,'token':token_generator.make_token(user)})
-        email_body = f'Please use this link to activate your account\nhttp://{domain+link}'
-        email_message = send_mail(
-            'Activate Your account',
-            email_body ,
-            'noreply@abc.com',
-            [email],
+        # uid = urlsafe_base64_encode(force_bytes(user.pk))
+        # domain = get_current_site(request).domain
+        # link = reverse('activate',kwargs={'uid':uid,'token':token_generator.make_token(user)})
+        # email_body = f'Please use this link to activate your account\nhttp://{domain+link}'
+        # email_message = send_mail(
+        #     'Activate Your account',
+        #     email_body ,
+        #     'noreply@abc.com',
+        #     [email],
             
-        )
-        messages.success(request,"Please check your email to activate the account")
-        return redirect('/auth/login')
+        # )
+        # messages.success(request,"Please check your email to activate the account")
+        return redirect('/')
         
    
 
-class VerificationView(View):
-    def get(self,request,uid, token):
-        try:
-            id = force_text(urlsafe_base64_decode(uid))
-            user = User.objects.get(id=id)
-            if not token_generator.check_token(user, token):
-                return redirect('/auth/login'+'?messages='+'User already activated')
+# class VerificationView(View):
+#     def get(self,request,uid, token):
+#         try:
+#             id = force_text(urlsafe_base64_decode(uid))
+#             user = User.objects.get(id=id)
+#             if not token_generator.check_token(user, token):
+#                 return redirect('/auth/login'+'?messages='+'User already activated')
             
-            if user.is_active:
-                request.session['logged_user'] = user.id
-                messages.success('Account has been activated')
-                return redirect('/auth/login')
-            user.is_active = True
-            user.save()
-        except Exception as e:
-            pass
-        return redirect('/auth/login')
+#             if user.is_active:
+#                 request.session['logged_user'] = user.id
+#                 messages.success('Account has been activated')
+#                 return redirect('/auth/login')
+#             user.is_active = True
+#             user.save()
+#         except Exception as e:
+#             pass
+#         return redirect('/auth/login')
 
 
 class LoginView(View):
@@ -125,18 +125,18 @@ class LoginView(View):
         user = User.objects.filter(email=email)
 
         if not email and not password:
-            messages.error(request, "Please enter your email and password")
+            messages.error(request, "Wrong Credentials, Please Try again")
             return redirect('/auth/login')
         if user:
             logged_user = user[0]
 
             if bcrypt.checkpw(password.encode(),logged_user.password.encode()):
-                if logged_user.is_active:
-                    request.session['logged_user'] = logged_user.id
-                    return redirect('/')
-                else:
-                    messages.error(request, "Account is not activate, Please check your email")
-                    return redirect('/auth/login')
+                # if logged_user.is_active:
+                request.session['logged_user'] = logged_user.id    
+                return redirect('/')
+                # else:
+                #     messages.error(request, "Account is not activate, Please check your email")
+                #     return redirect('/auth/login')
         messages.error(request, "Email or password are incorrect")
 
         return redirect('/auth/login')
