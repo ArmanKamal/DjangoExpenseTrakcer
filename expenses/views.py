@@ -119,13 +119,27 @@ def search_expenses(request):
         return JsonResponse(data, safe=False)
 
 
-# def expense_summary(request):
-#     current_date = datetime.date.today()
-#     six_month_prev_date = datetime.timedelta(days=180)
-#     expenses = Expense.objects.filter(date__gte=six_month_prev_date,date__lte=current_date)
-    
-#     def get_category(expense):
-#         return expense.category
+def expense_summary(request):
+    current_date = datetime.date.today()
+    user = User.objects.get(id=request.session['logged_user'])
+    six_month_prev_date = datetime.timedelta(days=180)
+    expenses = Expense.objects.filter(user=user,date__gte=six_month_prev_date,date__lte=current_date)
+    final = {}
+    def get_category(expense):
+        return expense.category
 
-#     category_list = list(set(map(get_category,expenses)))
+    category_list = list(set(map(get_category,expenses)))
+    def get_expense_category_amount(category):
+        amount = 0
+        filter_expense =expenses.filter(category=category)
+        for x in filter_expense:
+            amount += x.amount
+        return amount
 
+    for x in expenses:
+        for y in category_list:
+            final[y] = get_expense_category_amount(y)
+    return JsonResponse({'expense_category_data': final},safe=False)
+
+def stats_view(request):
+    return render(request, 'summary.html')

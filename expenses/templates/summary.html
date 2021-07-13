@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Expenses</a></li>
+            <li class="breadcrumb-item active" aria-current="page">AExpense Summary</li>
+        </ol>
+    </nav>
+    <canvas id="myChart" width="400" height="400"></canvas>
+<script src="{% static 'js/expense-chart.js' %}"></script>
+{% endblock %}
