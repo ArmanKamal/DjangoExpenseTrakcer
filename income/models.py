@@ -11,6 +11,8 @@ class IncomeManager(models.Manager):
             errors['date'] = "Please Choose a date"
         if postData['source'] == '':
             errors['source'] = "You must choose a source"
+        if postData['source'] == 'others' and postData['source_input'] == '':
+            errors['source_input'] = "You must type a source"
         source_exist = Source.objects.filter(name=postData['source_input'])
         if len(source_exist)>=1:
             errors['source_duplicate'] = "Source Already exists"
