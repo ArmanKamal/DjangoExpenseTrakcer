@@ -3,7 +3,7 @@ from authentication.models import User
 from .models import Source,Income
 from usersettings.models import Setting
 from django.contrib import messages
-from datetime import datetime
+import datetime
 from django.core.paginator import Paginator
 import json
 from django.http import JsonResponse
@@ -18,7 +18,7 @@ def index(request):
         return redirect('/auth/login')
     
     incomes = Income.objects.filter(owner=user[0]).order_by('-date')
-    paginator = Paginator(incomes,5)
+    paginator = Paginator(incomes,20)
     page_number = request.GET.get('page')
     page_obj = Paginator.get_page(paginator,page_number)
     sources = Source.objects.all()
@@ -48,7 +48,7 @@ def add_income(request):
   
     context = {
         "sources": sources,
-        "time": datetime.now()  
+        "time": datetime.date.today()  
     }
  
     return render(request, "add_income.html",context)
@@ -95,6 +95,7 @@ def update_income(request, id):
         source = Source.objects.get(name=request.POST['source'])
         income.amount = request.POST['amount']
         income.description = request.POST['description']
+        income.date = request.POST['date']
         income.source = source
         income.save()
         messages.success(request, "Updated Successfully")
@@ -115,7 +116,6 @@ def delete_income(request,id):
 
 
 def search_income(request):
-    print("Searching")
     if request.method == 'POST':
         search = json.loads(request.body).get('search')
         user = User.objects.get(id=request.session['logged_user'])
@@ -126,3 +126,31 @@ def search_income(request):
             source = Source.objects.get(id=d['source_id'])
             d['source_id'] = source.name
         return JsonResponse(data, safe=False)
+
+
+def income_summary(request):
+    current_date = datetime.date.today()
+    user = User.objects.get(id=request.session['logged_user'])
+    six_month_prev_date =current_date-datetime.timedelta(days=180)
+    incomes = Income.objects.filter(owner=user,date__gte=six_month_prev_date,date__lte=current_date)
+    final = {}
+    def get_category(incomes):
+        return incomes.source.name
+
+    category_list = list(set(map(get_category,incomes)))
+    def get_income_source_amount(source):
+        amount = 0
+        filter_incomes =incomes.filter(source__name=source)
+        for x in filter_incomes:
+            amount += x.amount
+        return amount
+
+    for x in incomes:
+        for y in category_list:
+            final[y] = get_income_source_amount(y)
+    return JsonResponse({'income_source_data': final},safe=False)
+
+def income_stats_view(request):
+    if 'logged_user' not in request.session:
+        return redirect('/auth/login')
+    return render(request, 'income_summary.html')

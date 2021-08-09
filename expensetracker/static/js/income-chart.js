@@ -1,4 +1,4 @@
-const expenseChart = (labels, data) => {
+const incomeChart = (labels, data) => {
     var ctx = document.getElementById('myChart').getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bar',
@@ -37,7 +37,7 @@ const expenseChart = (labels, data) => {
 
 }
 
-const expensePieChart = (labels, data) => {
+const incomePieChart = (labels, data) => {
     var ctx = document.getElementById('pieChart').getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'pie',
@@ -76,16 +76,16 @@ const expensePieChart = (labels, data) => {
 
 }
 
-const getExpenseData = () => {
-    fetch('/expense_category_summary')
+const getIncomeData = () => {
+    fetch('/income/income_source_summary')
     .then(res=>res.json())
     .then((results)=>{
-        const [labels,data] = [Object.keys(results.expense_category_data),Object.values(results.expense_category_data)]
+        const [labels,data] = [Object.keys(results.income_source_data),Object.values(results.income_source_data)]
 
-        expenseChart(labels,data)
-        expensePieChart(labels,data)
+        incomeChart(labels,data)
+        incomePieChart(labels,data)
     })
 }
 
 
-document.onload=getExpenseData();
+document.onload=getIncomeData();

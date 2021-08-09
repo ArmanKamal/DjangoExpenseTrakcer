@@ -18,24 +18,12 @@
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-
-                       
-
-                        <div class="topbar-divider d-none d-sm-block"></div>
-
-                        <!-- Nav Item - User Information -->
-                     <li class="nav-item dropdown mx-5">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                User
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">Profile</a>
-                                <a class="dropdown-item" href="{% url 'settings' %}">Settings</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-                                </div>
-                            </li>
-
+                        <li>
+                            <a href="{% url 'settings' %}" class="btn btn-success mx-2">Settings</a>
+                        </li>
+                        <li>
+                             <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+                        </li>
                     </ul>
 
                 </nav>

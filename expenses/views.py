@@ -17,7 +17,7 @@ def index(request):
         return redirect('/auth/login')
     user = User.objects.get(id=request.session['logged_user'])
     expenses = Expense.objects.filter(user=user).order_by('-spend_date')
-    paginator = Paginator(expenses,5)
+    paginator = Paginator(expenses,20)
     page_number = request.GET.get('page')
     page_obj = Paginator.get_page(paginator,page_number)
     categories = Category.objects.all()
@@ -91,6 +91,7 @@ def update_expense(request,id):
         category = Category.objects.get(name=request.POST['category'])
         expense.amount = request.POST['amount']
         expense.description = request.POST['description']
+        expense.spend_date = request.POST['spend_date']
         expense.category = category
         expense.save()
         messages.success(request, "Updated Successfully")
@@ -122,16 +123,16 @@ def search_expenses(request):
 def expense_summary(request):
     current_date = datetime.date.today()
     user = User.objects.get(id=request.session['logged_user'])
-    six_month_prev_date = datetime.timedelta(days=180)
-    expenses = Expense.objects.filter(user=user,date__gte=six_month_prev_date,date__lte=current_date)
+    six_month_prev_date =current_date-datetime.timedelta(days=180)
+    expenses = Expense.objects.filter(user=user,spend_date__gte=six_month_prev_date,spend_date__lte=current_date)
     final = {}
     def get_category(expense):
-        return expense.category
+        return expense.category.name
 
     category_list = list(set(map(get_category,expenses)))
     def get_expense_category_amount(category):
         amount = 0
-        filter_expense =expenses.filter(category=category)
+        filter_expense =expenses.filter(category__name=category)
         for x in filter_expense:
             amount += x.amount
         return amount
@@ -142,4 +143,7 @@ def expense_summary(request):
     return JsonResponse({'expense_category_data': final},safe=False)
 
 def stats_view(request):
+    if 'logged_user' not in request.session:
+        return redirect('/auth/login')
     return render(request, 'summary.html')
+
