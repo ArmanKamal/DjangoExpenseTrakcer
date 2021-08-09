@@ -10,7 +10,7 @@ searchField.addEventListener('keyup',function(event){
     const searchValue = event.target.value
 
     if(searchValue.trim().length > 0){
-        pagintorContainer.style.display = "none";
+
         mainTable.style.display = "none";
         tableBody.innerHTML = ''
         fetch('/income/search',{
