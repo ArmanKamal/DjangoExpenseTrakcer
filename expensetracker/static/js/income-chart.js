@@ -5,7 +5,7 @@ const incomeChart = (labels, data) => {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Last 6 month expenses',
+                label: 'Last 6 month incomes',
                 data: data,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -29,7 +29,7 @@ const incomeChart = (labels, data) => {
         options: {
             title:{
                 display: true,
-                text: "Expenses per category"
+                text: "Income per category"
             }
         }
     });

@@ -6,8 +6,9 @@ from django.contrib import messages
 import datetime
 from django.core.paginator import Paginator
 import json
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse, response
 from django.db.models import Q
+import csv
 # Create your views here.
 def index(request):
     if 'logged_user' not in request.session:
@@ -154,3 +155,17 @@ def income_stats_view(request):
     if 'logged_user' not in request.session:
         return redirect('/auth/login')
     return render(request, 'income_summary.html')
+
+def income_export_csv(request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition']='attatchment; filename=Incomes'+str(datetime.datetime.now())+'.csv'
+
+    writer = csv.writer(response)
+    writer.writerow(['Amount','Description','Source','Date'])
+    user = User.objects.get(id=request.session['logged_user'])
+    incomes = Income.objects.filter(owner=user)
+
+    for income in incomes:
+         writer.writerow([income.amount,income.description,income.source.name,income.date])
+
+    return response

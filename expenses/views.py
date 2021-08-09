@@ -10,6 +10,7 @@ import json
 from django.http import JsonResponse
 from usersettings.models import Setting
 import datetime
+import csv
 # Create your views here.
 
 def index(request):
@@ -147,3 +148,16 @@ def stats_view(request):
         return redirect('/auth/login')
     return render(request, 'summary.html')
 
+def expense_export_csv(request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition']='attatchment; filename=Expenses'+str(datetime.datetime.now())+'.csv'
+
+    writer = csv.writer(response)
+    writer.writerow(['Amount','Description','Category','Date'])
+    user = User.objects.get(id=request.session['logged_user'])
+    expenses = Expense.objects.filter(user=user)
+
+    for expense in expenses:
+         writer.writerow([expense.amount,expense.description,expense.category.name,expense.spend_date])
+
+    return response
