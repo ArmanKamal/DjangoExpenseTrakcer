@@ -7,10 +7,13 @@ EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 class UserManager(models.Manager):
     def regsiter_validation(self,postData):
         errors = {}
-        if  User.objects.filter(username=postData['username']).exists():
-            errors['username'] = "Username already exists"
-        if not str(postData['username']).isalnum():
-            errors['username_al'] = "Username should contain only alphanumeric characters"
+        if len(postData['username']) < 0:
+            errors['password'] = "Useranme cannot be empty"
+            if not str(postData['username']).isalnum():
+                errors['username_al'] = "Username should contain only alphanumeric characters"
+                if  User.objects.filter(username=postData['username']).exists():
+                    errors['username'] = "Username already exists"
+      
         if len(postData['alias']) < 3:
             errors['password'] = "Alias must be at least 3 characters"
         if User.objects.filter(email=postData['email']).exists():
