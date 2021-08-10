@@ -16,10 +16,13 @@ class UserManager(models.Manager):
       
         if len(postData['alias']) < 3:
             errors['password'] = "Alias must be at least 3 characters"
-        if User.objects.filter(email=postData['email']).exists():
-            errors['email'] = 'Email already exists'
-        if not EMAIL_REGEX.match(postData['email']):   
-            errors['email_address'] = "Invalid email address!"
+        if len(postData['email'])<0:
+            errors['email_empty'] = "Please provide email"
+            if not EMAIL_REGEX.match(postData['email']):   
+                errors['email_address'] = "Invalid email address!"
+                if User.objects.filter(email=postData['email']).exists():
+                    errors['email'] = 'Email already exists'
+        
         if len(postData['password']) < 5:
             errors['password'] = "Password must be at least 5 characters"
         if postData['password'] != postData['confirm_pw']:

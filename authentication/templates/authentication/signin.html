@@ -27,13 +27,13 @@
                          
                              <div class="col-md-12">
                                  <div class="form-group">
-                                     <input type="email" class="form-control"  name="email" id="email" placeholder="Email">
+                                     <input type="email" class="form-control"  name="email" id="email" placeholder="Email" required>
                                  </div>
                              </div>
                           
                              <div class="col-md-12">
                                 <div class="form-group">
-                                    <input type="password" class="form-control"  name="password" id="password" placeholder="Password">                                
+                                    <input type="password" class="form-control"  name="password" id="password" placeholder="Password" required>                                
                                 </div>
                           
                              </div>
@@ -46,9 +46,6 @@
                      </form>
                      <div class="col-md-12">
                        <p class=" mt-4">Dont have an account? <a href="{% url 'register' %}">Register</a></p>
-                     </div>
-                    <div class="col-md-12">
-                        <p>Forgot your password? <a href="{% url 'reset-password' %}">Reset Password</a></p>
                      </div>
                  </div>
              </div>
