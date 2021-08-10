@@ -8,20 +8,21 @@ class UserManager(models.Manager):
     def regsiter_validation(self,postData):
         errors = {}
         if len(postData['username']) < 0:
-            errors['password'] = "Useranme cannot be empty"
-            if not str(postData['username']).isalnum():
-                errors['username_al'] = "Username should contain only alphanumeric characters"
-                if  User.objects.filter(username=postData['username']).exists():
-                    errors['username'] = "Username already exists"
+            errors['username_empty'] = "Useranme cannot be empty"
+        if not str(postData['username']).isalnum():
+            errors['username_al'] = "Username should contain only alphanumeric characters"
+            if  User.objects.filter(username=postData['username']).exists():
+                errors['username_exist'] = "Username already exists"
       
         if len(postData['alias']) < 3:
             errors['password'] = "Alias must be at least 3 characters"
         if len(postData['email'])<0:
             errors['email_empty'] = "Please provide email"
-            if not EMAIL_REGEX.match(postData['email']):   
-                errors['email_address'] = "Invalid email address!"
-                if User.objects.filter(email=postData['email']).exists():
-                    errors['email'] = 'Email already exists'
+            if User.objects.filter(email=postData['email']).exists():
+                errors['email'] = 'Email already exists'
+        if not EMAIL_REGEX.match(postData['email']):   
+            errors['email_address'] = "Invalid email address!"
+     
         
         if len(postData['password']) < 5:
             errors['password'] = "Password must be at least 5 characters"
