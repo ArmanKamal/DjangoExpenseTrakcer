@@ -143,6 +143,28 @@ def expense_summary(request):
             final[y] = get_expense_category_amount(y)
     return JsonResponse({'expense_category_data': final},safe=False)
 
+def expense_summary_one_month(request):
+    current_date = datetime.date.today()
+    user = User.objects.get(id=request.session['logged_user'])
+    one_month_prev_date =current_date-datetime.timedelta(days=30)
+    expenses = Expense.objects.filter(user=user,spend_date__gte=one_month_prev_date,spend_date__lte=current_date)
+    final = {}
+    def get_category(expense):
+        return expense.category.name
+
+    category_list = list(set(map(get_category,expenses)))
+    def get_expense_category_amount(category):
+        amount = 0
+        filter_expense =expenses.filter(category__name=category)
+        for x in filter_expense:
+            amount += x.amount
+        return amount
+
+    for x in expenses:
+        for y in category_list:
+            final[y] = get_expense_category_amount(y)
+    return JsonResponse({'expense_category_data': final},safe=False)
+
 def stats_view(request):
     if 'logged_user' not in request.session:
         return redirect('/auth/login')
