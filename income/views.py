@@ -151,6 +151,30 @@ def income_summary(request):
             final[y] = get_income_source_amount(y)
     return JsonResponse({'income_source_data': final},safe=False)
 
+
+
+def income_summary_one_month(request):
+    current_date = datetime.date.today()
+    user = User.objects.get(id=request.session['logged_user'])
+    income_summary_one_month =current_date-datetime.timedelta(days=180)
+    incomes = Income.objects.filter(owner=user,date__gte=income_summary_one_month,date__lte=current_date)
+    final = {}
+    def get_category(incomes):
+        return incomes.source.name
+
+    category_list = list(set(map(get_category,incomes)))
+    def get_income_source_amount(source):
+        amount = 0
+        filter_incomes =incomes.filter(source__name=source)
+        for x in filter_incomes:
+            amount += x.amount
+        return amount
+
+    for x in incomes:
+        for y in category_list:
+            final[y] = get_income_source_amount(y)
+    return JsonResponse({'income_source_data': final},safe=False)
+
 def income_stats_view(request):
     if 'logged_user' not in request.session:
         return redirect('/auth/login')

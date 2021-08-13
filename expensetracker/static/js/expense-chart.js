@@ -5,7 +5,7 @@ const expenseChart = (labels, data) => {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Last 6 month expenses',
+                label: 'Expense',
                 data: data,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -27,9 +27,11 @@ const expenseChart = (labels, data) => {
             }]
         },
         options: {
-            title:{
-                display: true,
-                text: "Expenses per category"
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Last six month expenses'
+                }
             }
         }
     });
@@ -44,7 +46,7 @@ const expensePieChart = (labels, data) => {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Last 6 month expenses',
+                label: 'Expenses',
                 data: data,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -66,9 +68,11 @@ const expensePieChart = (labels, data) => {
             }]
         },
         options: {
-            title:{
-                display: true,
-                text: "Expenses per category"
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Last six month expenses'
+                }
             }
         }
     });
@@ -100,7 +104,7 @@ const expenseChart2 = (labels, data) => {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Last one month expenses',
+                label: 'Expense',
                 data: data,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -122,9 +126,11 @@ const expenseChart2 = (labels, data) => {
             }]
         },
         options: {
-            title:{
-                display: true,
-                text: "Expenses per category"
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Last one month expenses'
+                }
             }
         }
     });
@@ -139,7 +145,7 @@ const expensePieChart2 = (labels, data) => {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Last one month expenses',
+                label: 'Expense',
                 data: data,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -161,9 +167,11 @@ const expensePieChart2 = (labels, data) => {
             }]
         },
         options: {
-            title:{
-                display: true,
-                text: "Expenses per category"
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Last one month expenses'
+                }
             }
         }
     });
