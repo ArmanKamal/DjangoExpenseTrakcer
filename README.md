@@ -5,16 +5,16 @@ ExpenseTracker is a budget tracking website built with  Python, Django, Javascri
 #### Visit the Website https://expensebudget.herokuapp.com/auth/login
 
 ##### Login Page
-`Login Page`
+`Use email and password for Login`
 ![Register](https://user-images.githubusercontent.com/53625839/129467591-ed3e9ef8-1ce4-42b6-9a09-66f3e1b7028b.PNG)
 
 
 ##### Register Page
-`Register Page`
+`Fill the required register form`
 ![Register](https://user-images.githubusercontent.com/53625839/129467591-ed3e9ef8-1ce4-42b6-9a09-66f3e1b7028b.PNG)
 
 ##### Realtime Validation of Register Page
-`Register Page`
+`You can see realtime validation using fetch api`
 ![RegisterValidation](https://user-images.githubusercontent.com/53625839/129467703-a6d030cb-83c1-414b-bbe9-e39fc6db15a6.PNG)
 
 
@@ -43,12 +43,12 @@ ExpenseTracker is a budget tracking website built with  Python, Django, Javascri
 ![Capture10](https://user-images.githubusercontent.com/53625839/129467508-5cc5e3ed-d28e-44b2-b938-97c4128066e2.PNG)
 
 ##### Profile Page 
-`User Profile Page`
+`You can see your full profile information`
 ![Capture5](https://user-images.githubusercontent.com/53625839/129467748-d204f51a-bb31-4d44-8797-3e139bd3f144.PNG)
 
 
 ##### Profile Edit Page 
-`User Profile Page`
+`Fill the edit form to update your profile page`
 ![Capture6](https://user-images.githubusercontent.com/53625839/129467767-6f26e68b-3e36-437d-8b05-56ee89d6a1d1.PNG)
 
 
