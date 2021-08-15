@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+ {% block content %}
+ <section class="contact-from pt-4">
+     <div class="container">
+         <h2><b>{{user.username|title}}'s</b> profile</p>
+         <p><b>Alias:</b> {{user.alias}}</p>
+         <p><b>Country:</b> {{user.countries|title}}</p>
+         <p><b>Email:</b> {{user.email}}</p>
+         <a href="{% url 'profile-edit' %}" class="btn btn-success">Edit Profile</a>
+
+     </div>
+ </section>
+
+
+ {% endblock %}

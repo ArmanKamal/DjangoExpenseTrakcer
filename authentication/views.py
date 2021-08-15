@@ -2,7 +2,7 @@ import re
 from django.shortcuts import render,redirect
 from django.views import View
 import json
-from django.http import JsonResponse
+from django.http import JsonResponse, request
 from .models import User
 from validate_email import validate_email
 from django.contrib import messages
@@ -220,3 +220,34 @@ class RequestPasswordCompleted(View):
 
           
 
+def ProfilePage(request):
+    user = User.objects.get(id=request.session['logged_user'])
+    context = { "user": user}
+    return render(request, "authentication/profile.html",context)
+
+
+def EditProfilePage(request):
+    user = User.objects.get(id=request.session['logged_user'])
+    context = { "user": user}
+    return render(request, "authentication/profile-edit.html",context)
+
+def UpdateProfilePage(request):
+    user = User.objects.get(id=request.session['logged_user'])
+    context = { "user": user}
+    if request.method == "POST":
+        errors = User.objects.regsiter_validation(request.POST)
+        if len(errors)>0:
+            for key,value in errors.items():
+                messages.error(request, value)
+            return redirect('/auth/profile-edit')
+        user.username = request.POST['username']
+        user.alias = request.POST['alias']
+        user.email = request.POST['email']
+        password = request.POST['password']
+        user.countries = request.POST['countries']
+
+        hash_pw = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+        user.password=hash_pw
+        user.save()
+        return redirect('/auth/profile')
+    return render('authentication/profile-edit.html',context)

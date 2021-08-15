@@ -9,6 +9,7 @@ import json
 from django.http import JsonResponse,HttpResponse, response
 from django.db.models import Q
 import csv
+import xlwt
 # Create your views here.
 def index(request):
     if 'logged_user' not in request.session:
@@ -191,5 +192,28 @@ def income_export_csv(request):
 
     for income in incomes:
          writer.writerow([income.amount,income.description,income.source.name,income.date])
+
+    return response
+
+def income_export_excel(request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition']='attatchment; filename=Incomes'+str(datetime.datetime.now())+'.xls'
+    wb = xlwt.Workbook(encoding="utf-8")
+    ws = wb.add_sheet('Expenses')
+    row_number = 0
+    font_style=xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns=['Amount','Description','Source','Date']
+    for col in range(len(columns)):
+        ws.write(row_number,col,columns[col],font_style)
+    font_style=xlwt.XFStyle()
+    user = User.objects.get(id=request.session['logged_user'])
+    rows = Income.objects.filter(owner=user).values_list('amount','description','source__name','date')
+    for row in rows:
+        row_number+=1
+        for col_num in range(len(row)):
+            ws.write(row_number,col_num, str(row[col_num]), font_style)
+    wb.save(response)
 
     return response

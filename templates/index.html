@@ -17,8 +17,7 @@
                 aria-label="Search" aria-describedby="basic-addon2">
         </div>
     </form>
-        <a href="{% url 'expense_export_csv' %}" class="btn btn-info ml-3 ">Export PDF</a>
-  <a href="{% url 'expense_export_csv' %}" class="btn btn-info ml-3 ">Export XML</a>
+  <a href="{% url 'expense_export_excel' %}" class="btn btn-info ml-3 ">Export Excel</a>
   <a href="{% url 'expense_export_csv' %}" class="btn btn-info ml-3 ">Export CSV</a>
   <a href="{% url 'add-expense' %}" class="btn btn-primary ml-auto">Add Expense</a>
 </div>
@@ -43,7 +42,7 @@
         <tr>
           <td>${{ expense.amount|floatformat:2 }}</td>
           <td>{{ expense.category.name }}</td>
-          <td>{{ expense.description }}</td>
+          <td>{{ expense.description|truncatewords:15 }}</td>
           <td>{{ expense.spend_date }}</td>
           <td>
             <a href="edit-expense/{{expense.id}}" class="btn btn-success">Edit</a>

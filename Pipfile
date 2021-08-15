@@ -11,6 +11,7 @@ six = "*"
 bcrypt = "*"
 dj-database-url = "*"
 django-smtp-ssl = "*"
+xlwt = "*"
 
 [dev-packages]
 

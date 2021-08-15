@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index,add_expense,create_expense,edit_expense,delete_expense,update_expense,search_expenses,expense_summary,stats_view,expense_export_csv,expense_summary_one_month
+from .views import index,add_expense,create_expense,edit_expense,delete_expense,update_expense,search_expenses,expense_summary,stats_view,expense_export_csv,expense_summary_one_month,expense_export_excel
 
 urlpatterns = [
     path('', index,name="home"),
@@ -12,5 +12,6 @@ urlpatterns = [
     path('expense_category_summary',expense_summary,name="expense_summary"),
     path('expense_category_one_month',expense_summary_one_month,name="expense_summary_one_month"),
     path('expense_export_csv',expense_export_csv,name="expense_export_csv"),
+    path('expense_export_excel',expense_export_excel,name="expense_export_excel"),
     path('expenses_stats',stats_view,name="summary")
 ]
